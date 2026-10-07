@@ -1,24 +1,24 @@
 name: Prueba Tokens
- 
+
 on:
-push:
- 
+  push:
+
 jobs:
-comprobar:
-runs-on: self-hosted
- 
-steps:
-- name: Comparar tokens
-shell: cmd
-env:
-DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
-run: |
-echo LOCAL_DEV_TOKEN=%LOCAL_DEV_TOKEN%
- 
-if "%DEV_TOKEN%"=="%LOCAL_DEV_TOKEN%" (
-echo TOKENS COINCIDEN
-exit /b 0
-) else (
-echo TOKENS DISTINTOS
-exit /b 1
-)
+  comprobar:
+    runs-on: self-hosted
+
+    steps:
+      - name: Mostrar variables
+        shell: cmd
+        env:
+          DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
+        run: |
+          echo LOCAL_DEV_TOKEN=%LOCAL_DEV_TOKEN%
+
+          if "%DEV_TOKEN%"=="%LOCAL_DEV_TOKEN%" (
+            echo TOKENS COINCIDEN
+            exit /b 0
+          ) else (
+            echo TOKENS DISTINTOS
+            exit /b 1
+          )
