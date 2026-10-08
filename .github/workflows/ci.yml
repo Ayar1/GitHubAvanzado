@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+  workflow_dispatch:
+
+jobs:
+  updatereadme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Actualizar README
+        run: |
+          echo "Añadida feature: ${{ github.head_ref || github.ref_name }}" >> README.md
+
+  validate-dev:
+    runs-on: self-hosted
+    needs: updatereadme
+
+    steps:
+      - name: Validar DEV_TOKEN
+        shell: cmd
+        env:
+          DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
+        run: |
+          if "%DEV_TOKEN%"=="%LOCAL_DEV_TOKEN%" (
+            echo TOKENS COINCIDEN
+            exit /b 0
+          ) else (
+            echo TOKENS DISTINTOS
+            exit /b 1
+          )
